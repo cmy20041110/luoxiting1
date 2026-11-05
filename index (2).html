@@ -1,0 +1,79 @@
+# 样本册上线到 GitHub Pages · 操作指南
+
+> 本文档只做「怎么发」。文件本身已是自包含单文件（437 张图片全部内嵌 base64），
+> 上传后不会再出现"图片打不开"的问题，也不需要额外的图片目录。
+
+## 一、发布前只需做一件事
+
+把 HTML 文件**改名**为 `index.html`：
+
+```
+大码男装_区域视觉样本册_品类款式版_v6_10_28_11.html  →  index.html
+```
+
+GitHub Pages 只认 `index.html` 作为站点首页。想保留版本号可以放两份，
+一份 `index.html`、一份原名作为归档。
+
+## 二、命令方式（推荐，适合 71 MB 的大文件）
+
+GitHub 网页上传有 25 MB 单文件限制，这个文件超了，必须走 git 命令或 GitHub Desktop。
+
+```bash
+# 1. 在 GitHub 上新建一个空仓库（不要勾选 README），记下地址，例如
+#    https://github.com/你的用户名/plus-size-lookbook.git
+
+# 2. 本地建目录，放入 index.html
+mkdir plus-size-lookbook && cd plus-size-lookbook
+
+# 3. 初始化并提交
+git init
+git branch -M main
+git add index.html
+git commit -m "add plus-size menswear visual lookbook"
+
+# 4. 推上去
+git remote add origin https://github.com/你的用户名/plus-size-lookbook.git
+git push -u origin main
+```
+
+## 三、开启 Pages
+
+1. 仓库页 → **Settings** → 左侧 **Pages**
+2. **Source** 选 `Deploy from a branch`
+3. Branch 选 `main`，目录选 `/ (root)`，Save
+4. 等 1–2 分钟，访问：
+
+```
+https://你的用户名.github.io/plus-size-lookbook/
+```
+
+## 四、图形方式（不想敲命令）
+
+用 **GitHub Desktop**：Add local repository → 把你的文件夹拖进去 →
+Commit → Publish repository → 勾选 *Keep this code private* 视情况选择 →
+之后同样到 Settings → Pages 打开即可。GitHub Desktop 没有 25 MB 网页上传限制。
+
+## 五、几点注意事项
+
+| 事项 | 说明 |
+|---|---|
+| 单文件上限 | GitHub 单文件硬上限 100 MB，本文件 71 MB，在限内但接近，不要再往里加图 |
+| 公开性 | Pages 站点默认公开可访问。样本册含内部口径说明与上款路径，若不宜外发，请把仓库设为 private（private 仓库的 Pages 需付费计划）或改用「临时内部分享」方式 |
+| 加载速度 | 单文件 71 MB，首次打开需要完整下载。若访问体验差，建议把内嵌图片拆成独立文件（可用后面方案） |
+| 更新 | 后续改图只需覆盖 `index.html`，再 `git add / commit / push`，Pages 会自动重新部署 |
+
+## 六、如果觉得 71 MB 太大
+
+可以拆成"网页 + 图片目录"的结构（GitHub Pages 支持相对路径）：
+
+```
+plus-size-lookbook/
+├── index.html          ← 移除 base64，改为 <img src="assets/xxx.jpg">
+└── assets/
+    ├── s00.jpg
+    ├── s01.jpg
+    └── ... 437 张
+```
+
+好处是浏览器可以按需加载、可缓存，首屏快很多；代价是上传的是 438 个文件。
+需要拆分的话可以直接说，我来把内嵌图片导出成 assets 目录并改写引用。
